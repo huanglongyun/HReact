@@ -49,11 +49,14 @@ const createTextNode = (text) => {
 };
 
 const createElement = (type, props, ...children) => {
+  console.log(type, props, children);
   return {
     type,
     props: {
       ...props,
-      children,
+      children: children.map((child) =>
+        typeof child === "string" ? createTextNode(child) : child
+      ),
     },
   };
 };
@@ -97,5 +100,5 @@ const render = (el, container) => {
 
 // 测试
 const textEl = createTextNode("hello world!");
-const App = createElement("h1", { id: "title" }, textEl);
+const App = createElement("h1", { id: "title" }, "hello world!");
 render(App, document.querySelector("#root"));
