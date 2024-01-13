@@ -49,7 +49,6 @@ const createTextNode = (text) => {
 };
 
 const createElement = (type, props, ...children) => {
-  console.log(type, props, children);
   return {
     type,
     props: {
@@ -99,6 +98,22 @@ const render = (el, container) => {
 };
 
 // 测试
-const textEl = createTextNode("hello world!");
+// const textEl = createTextNode("hello world!");
+// const App = createElement("h1", { id: "title" }, "hello world!","HReact");
+// console.log(App);
+// render(App, document.querySelector("#root"));
+
+// v6 写出形如下面的形式
+// ReactDOM.createRoot(document.getElementById('root')!).render(<App />)
+
+const ReactDOM = {
+  createRoot(container) {
+    return {
+      render(App) {
+        render(App, container);
+      },
+    };
+  },
+};
 const App = createElement("h1", { id: "title" }, "hello world!");
-render(App, document.querySelector("#root"));
+ReactDOM.createRoot(document.getElementById("root")).render(App);
