@@ -1,3 +1,4 @@
+console.log('使用了React');
 // v3 动态创建vdom
 const createTextNode = (text) => {
   return {
