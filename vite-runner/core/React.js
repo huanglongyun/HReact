@@ -67,53 +67,63 @@ const workLoop = (IdleDeadline) => {
 };
 requestIdleCallback(workLoop);
 
-const performWorkOfUnit = (work) => {
-  if (!work.dom) {
-    // 1. 创建dom
-    const dom =
-      work.type === "TEXT_ELEMENT"
-        ? document.createTextNode("")
-        : document.createElement(work.type);
+const createDom = (type) => {
+  return type === "TEXT_ELEMENT"
+    ? document.createTextNode("")
+    : document.createElement(type);
+};
 
-    work.dom = dom;
-    work.parent.dom.append(dom);
-    // 2. 处理props
-    Object.keys(work.props).forEach((key) => {
-      if (key !== "children") {
-        dom[key] = work.props[key];
-      }
-    });
-  }
-  // 3. 处理链表,设置指针
-  const children = work.props.children;
+const updateProps = (props, dom) => {
+  Object.keys(props).forEach((key) => {
+    if (key !== "children") {
+      dom[key] = props[key];
+    }
+  });
+};
+
+const handleChildren = (fiber) => {
+  const children = fiber.props.children;
   let prvChild = null;
   children.forEach((child, index) => {
-    const newWork = {
+    const newFiber = {
       type: child.type,
       props: child.props,
       child: null,
-      parent: work,
+      parent: fiber,
       sibling: null,
       dom: null,
     };
     // 第一个元素，child就是自己
     if (index === 0) {
-      work.child = newWork;
+      fiber.child = newFiber;
     } else {
       // 不是第一个，那就是上一个的兄弟
-      prvChild.sibling = newWork;
+      prvChild.sibling = newFiber;
     }
-    prvChild = newWork;
+    prvChild = newFiber;
   });
+};
+
+const performWorkOfUnit = (fiber) => {
+  if (!fiber.dom) {
+    // 1. 创建dom
+    const dom = (fiber.dom = createDom(fiber.type));
+    fiber.parent.dom.append(dom);
+
+    // 2. 处理props
+    updateProps(fiber.props, dom);
+  }
+  // 3. 处理链表,设置指针
+  handleChildren(fiber);
 
   // 4. 返回下一个对象
-  if (work.child) {
-    return work.child;
+  if (fiber.child) {
+    return fiber.child;
   }
-  if (work.sibling) {
-    return work.sibling;
+  if (fiber.sibling) {
+    return fiber.sibling;
   }
-  return work.parent?.sibling;
+  return fiber.parent?.sibling;
 };
 
 const React = {
