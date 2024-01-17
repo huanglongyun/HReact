@@ -6,25 +6,38 @@ import React from "./core/React.js";
 // }
 // console.log('AppTest',AppTest);
 
-function Counter({num}){
-	return (<div>counter: {num}</div>)
+function Counter({ num }) {
+  return <div>counter: {num}</div>;
 }
-function Show(){
-	return <Counter></Counter>
+function Show() {
+  return <Counter></Counter>;
 }
 
-function App(){
-	return (<div>
-		<h1>hello world!</h1>
-		<Counter num={11}></Counter>
-		<Counter num={12}></Counter>
-	</div>)
+let count=10
+let props = { id: 123 };
+function App() {
+  function click() {
+    count++;
+    props = {};
+    console.log("click", count);
+
+    React.update();
+  }
+  return (
+    <div {...props}>
+      <h1>hello world!</h1>
+      {/* <Counter num={11}></Counter> */}
+      {count}
+      <button onClick={click}>click</button>
+      {/* <Counter num={12}></Counter> */}
+    </div>
+  );
 }
 // const App=<div>
 // 	<h1>hello world!</h1>
 // 	<Show />
 // </div>
- //why?
+//why?
 export default App;
 
 // 思考dom非常强大 render会出现什么情况
