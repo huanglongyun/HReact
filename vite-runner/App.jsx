@@ -13,32 +13,36 @@ function Show() {
   return <Counter></Counter>;
 }
 
-let count=10
-let props = { id: 123 };
-function App() {
-  function click() {
-    count++;
-    props = {};
-    console.log("click", count);
+let showBar = false;
+function UpadteChildren() {
+  // const foo = <div>foo</div>;
+  function Foo(){
+    return (<div>foo</div>)
+  }
+  const bar = <p>bar</p>;
 
+  function toggle() {
+    showBar = !showBar;
     React.update();
   }
+
   return (
-    <div {...props}>
-      <h1>hello world!</h1>
-      {/* <Counter num={11}></Counter> */}
-      {count}
-      <button onClick={click}>click</button>
-      {/* <Counter num={12}></Counter> */}
+    <div>
+      <h1>show foo or bar</h1>
+      <div> {showBar ? bar : <Foo/>}</div>
+      <button onClick={toggle}>toggle</button>
     </div>
   );
 }
-// const App=<div>
-// 	<h1>hello world!</h1>
-// 	<Show />
-// </div>
-//why?
+function App() {
+  function click() {
+    React.update();
+  }
+  return (
+    <div>
+      {/* <h1>hello world!</h1> */}
+      <UpadteChildren />
+    </div>
+  );
+}
 export default App;
-
-// 思考dom非常强大 render会出现什么情况
-// 浏览器会卡顿

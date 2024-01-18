@@ -27,6 +27,7 @@ const createElement = (type, props, ...children) => {
 // work inprogress
 let wipRoot = null;
 let currentRoot = null;
+let deletions = [];
 // v4 动态创建节点
 const render = (el, container) => {
   wipRoot = {
@@ -65,10 +66,24 @@ const workLoop = (IdleDeadline) => {
 };
 
 const commitRoot = () => {
+  deletions.forEach(commitDeletion);
+  deletions = [];
   commitWork(wipRoot.child);
   currentRoot = wipRoot;
   wipRoot = null;
 };
+
+function commitDeletion(fiber) {
+  if (fiber.dom) {
+    let fiberParent = fiber.parent;
+    while (!fiberParent.dom) {
+      fiberParent = fiberParent.parent;
+    }
+    fiberParent.dom.removeChild(fiber.dom);
+  } else {
+    commitDeletion(fiber.child);
+  }
+}
 
 const commitWork = (fiber) => {
   if (!fiber) return;
@@ -150,6 +165,7 @@ const reconcileChildren = (fiber, children) => {
         dom: null,
         effectTag: "placement",
       };
+      if (oldFiber) deletions.push(oldFiber);
     }
     if (oldFiber) {
       oldFiber = oldFiber.sibling;
