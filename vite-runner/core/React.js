@@ -28,6 +28,7 @@ const createElement = (type, props, ...children) => {
 let wipRoot = null;
 let currentRoot = null;
 let deletions = [];
+let wipFiber = null;
 // v4 动态创建节点
 const render = (el, container) => {
   wipRoot = {
@@ -40,12 +41,14 @@ const render = (el, container) => {
 };
 
 const update = () => {
-  wipRoot = {
-    dom: currentRoot.dom,
-    props: currentRoot.props,
-    alternate: currentRoot,
+  let currentFiber = wipFiber;
+  return () => {
+    wipRoot = {
+      ...currentFiber,
+      alternate: currentFiber,
+    };
+    nextWorkOfUnit = wipRoot;
   };
-  nextWorkOfUnit = wipRoot;
 };
 
 let nextWorkOfUnit = null;
@@ -55,6 +58,11 @@ const workLoop = (IdleDeadline) => {
   while (!shouldYield && nextWorkOfUnit) {
     // 在这里处理dom
     nextWorkOfUnit = performWorkOfUnit(nextWorkOfUnit);
+
+    if (wipRoot?.sibling?.type === nextWorkOfUnit?.type) {
+      // console.log('fff',wipRoot,nextWorkOfUnit);
+      nextWorkOfUnit = undefined;
+    }
     // 终止条件 当剩余时间<1，跳出循环 执行下一个requestIdleCallback
     shouldYield = IdleDeadline.timeRemaining() < 1;
   }
@@ -192,6 +200,7 @@ const reconcileChildren = (fiber, children) => {
 };
 
 const updateFuncionComponent = (fiber) => {
+  wipFiber = fiber;
   const children = [fiber.type(fiber.props)];
   reconcileChildren(fiber, children);
 };

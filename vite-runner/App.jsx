@@ -30,14 +30,56 @@ function UpadteChildren() {
     </div>
   );
 }
-function App() {
+
+let countFoo = 1;
+function Foo() {
+  console.log("foo");
+  const update = React.update();
   function click() {
-    React.update();
+    countFoo++;
+    update();
   }
   return (
     <div>
-      {/* <h1>hello world!</h1> */}
-      <UpadteChildren />
+      <h1>Foo</h1>
+      {countFoo}
+      <button onClick={click}>click</button>
+    </div>
+  );
+}
+
+let countBar = 1;
+function Bar() {
+  console.log("bar");
+  const update = React.update();
+  function click() {
+    countBar++;
+    update();
+  }
+  return (
+    <div>
+      <h1>Bar</h1>
+      {countBar}
+      <button onClick={click}>click</button>
+    </div>
+  );
+}
+
+let countRoot = 1;
+function App() {
+  console.log("root");
+  const update = React.update();
+  function click() {
+    countRoot++;
+    update();
+  }
+  return (
+    <div>
+      <h1>root</h1>
+      {countRoot}
+      <button onClick={click}>click</button>
+      <Foo />
+      <Bar />
     </div>
   );
 }
