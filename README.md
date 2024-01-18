@@ -74,5 +74,9 @@ props
 2. 多个多余节点
 通过while循环一直获取多余节点，将其添加到删除集合，把并且将旧节点赋值成其兄弟节点
 
-
+### edge case
+1. {show && bar} 在最后
+调试发现child是false，调整一下只有child的true时才添加 newFiber
+2. {show && bar} 在前面
+当节点是false，不要赋值给prevchild
 

@@ -156,15 +156,18 @@ const reconcileChildren = (fiber, children) => {
         alternate: oldFiber,
       };
     } else {
-      newFiber = {
-        type: child.type,
-        props: child.props,
-        child: null,
-        parent: fiber,
-        sibling: null,
-        dom: null,
-        effectTag: "placement",
-      };
+      // console.log('child',child);
+      if (child) {
+        newFiber = {
+          type: child.type,
+          props: child.props,
+          child: null,
+          parent: fiber,
+          sibling: null,
+          dom: null,
+          effectTag: "placement",
+        };
+      }
       if (oldFiber) deletions.push(oldFiber);
     }
     if (oldFiber) {
@@ -178,9 +181,10 @@ const reconcileChildren = (fiber, children) => {
       // 不是第一个，那就是上一个的兄弟
       prvChild.sibling = newFiber;
     }
-    prvChild = newFiber;
+    if (newFiber) {
+      prvChild = newFiber;
+    }
   });
-  // console.log("oldFiber", oldFiber);
   while (oldFiber) {
     deletions.push(oldFiber);
     oldFiber = oldFiber.sibling;

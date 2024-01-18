@@ -15,15 +15,6 @@ function Show() {
 
 let showBar = false;
 function UpadteChildren() {
-  // const foo = <div>foo</div>;
-  // function Foo(){
-  //   return (<div>foo</div>)
-  // }
-  const foo=(<div>
-    foo 
-    <div>child1</div>
-    <div>child2</div>
-  </div>)
   const bar = <div>bar</div>;
 
   function toggle() {
@@ -34,8 +25,8 @@ function UpadteChildren() {
   return (
     <div>
       <h1>show foo or bar</h1>
+      {showBar && bar}
       <button onClick={toggle}>toggle</button>
-      <div> {showBar ? bar : foo}</div>
     </div>
   );
 }
