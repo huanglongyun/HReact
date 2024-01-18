@@ -180,6 +180,11 @@ const reconcileChildren = (fiber, children) => {
     }
     prvChild = newFiber;
   });
+  // console.log("oldFiber", oldFiber);
+  while (oldFiber) {
+    deletions.push(oldFiber);
+    oldFiber = oldFiber.sibling;
+  }
 };
 
 const updateFuncionComponent = (fiber) => {
