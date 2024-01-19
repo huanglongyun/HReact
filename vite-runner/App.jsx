@@ -9,7 +9,7 @@ function App() {
   const [bar, setBar] = React.useState("bar");
   function add() {
     setCount((c) => c + 1);
-    setBar((s) => s + "bar");
+    setBar("bar");
   }
   return (
     <div>
