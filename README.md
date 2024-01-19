@@ -87,21 +87,22 @@ props
 
 
 ### 实现useState
-实现 const [count,setCount]=useState(10)
-1. 存储值
-2. 函数
-更新
+1. 实现 const [count,setCount]=useState(10)
+    1. 存储值
+		   将值存储在节点上，等更新时对比，有值就使用该值，没有，就是初始化的值
+    2. 返回函数
+重点：将值挂载在旧的节点上
 
-将值存储在节点上，等更新时对比，有值就使用该值，没有，就是初始化的值
-多个
+2. 多个action
 将其收集在一个集合中，通过下标获取是哪一个 并操作它
-为什么在function compont中重置？
+为什么在updateFuncionComponent中重置？
 
-
-老的值存在哪里
-
-批量执行action
-react不为了频繁渲染，将action收集起来，在合适的时期渲染
+3. 批量执行action
+react为了不频繁渲染，将action收集起来，在合适的时期渲染。
 将action收集起来，遍历渲染，完成后要清空集合
 
-将action中传入的字符串处理成函数形式，
+4. 处理非函数的action
+将action中传入的字符串处理成函数形式，对齐函数形式
+
+5. 减少不必要的更新
+判断执行action后的值与之前的值是否相等，相等就不执行后续操作
