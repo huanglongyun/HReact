@@ -106,3 +106,8 @@ react为了不频繁渲染，将action收集起来，在合适的时期渲染。
 
 5. 减少不必要的更新
 判断执行action后的值与之前的值是否相等，相等就不执行后续操作
+
+
+### useEffect()
+类似于vue的watch
+https://github.com/huanglongyun/HReact
