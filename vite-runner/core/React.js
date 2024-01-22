@@ -91,11 +91,8 @@ function commitEffectHooks() {
       fiber.effectHooks?.forEach((hook, index) => {
         if (hook.deps.length > 0) {
           const oldEffectHook = fiber.alternate?.effectHooks[index];
-
           const needUpdate = oldEffectHook.deps.some((dep, i) => {
             return hook.deps[i] !== dep;
-            // console.log('dep',dep);
-            // console.log('hook',hook);
           });
           needUpdate && (hook.cleanUp = hook.callback());
         }
